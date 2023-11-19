@@ -44,4 +44,17 @@ export const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+  
+
+  invalidInput: {
+    borderColor: "red", // Adapte conforme necessário
+    borderWidth: 1,
+  },
+
+  invalidText: {
+    color: "red", // Adapte conforme necessário
+    marginTop: 5,
+  },
+
+
 });

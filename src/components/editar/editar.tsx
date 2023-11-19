@@ -16,10 +16,22 @@ const EditarModal: React.FC<EditarModalProps> = ({
   editedItem,
 }) => {
   const [editedValues, setEditedValues] = useState({ ...editedItem });
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSave = () => {
+    if (!validateEmail(editedValues.email)) {
+      setIsValidEmail(false);
+      return;
+    }
+
+    setIsValidEmail(true);
     onEditar(editedValues);
-    onCancel(); 
+    onCancel();
   };
 
   return (
@@ -34,7 +46,48 @@ const EditarModal: React.FC<EditarModalProps> = ({
               setEditedValues((prev) => ({ ...prev, nome: text }))
             }
           />
-          {/* Adicione inputs estilizados para os outros campos do formulário */}
+
+          <Text style={styles.modalLabel}>Sobrenome:</Text>
+          <TextInput
+            style={styles.modalInput}
+            value={editedValues.sobrenome}
+            onChangeText={(text) =>
+              setEditedValues((prev) => ({ ...prev, sobrenome: text }))
+            }
+          />
+
+          <Text style={styles.modalLabel}>Data de Nascimento:</Text>
+          <TextInput
+            style={styles.modalInput}
+            value={editedValues.nascimento}
+            onChangeText={(text) =>
+              setEditedValues((prev) => ({ ...prev, nascimento: text }))
+            }
+          />
+
+          <Text style={styles.modalLabel}>Email:</Text>
+          <TextInput
+            style={[styles.modalInput, !isValidEmail && styles.invalidInput]}
+            value={editedValues.email}
+            onChangeText={(text) => {
+              setEditedValues((prev) => ({ ...prev, email: text }));
+              setIsValidEmail(true);
+            }}
+          />
+          {!isValidEmail && (
+            <Text style={styles.invalidText}>Digite um e-mail válido.</Text>
+          )}
+
+          <Text style={styles.modalLabel}>Gênero:</Text>
+          <TextInput
+            style={styles.modalInput}
+            value={editedValues.genero}
+            onChangeText={(text) =>
+              setEditedValues((prev) => ({ ...prev, genero: text }))
+            }
+          />
+
+          {/* Adicione inputs para outros campos conforme necessário */}
 
           <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
             <Text style={styles.botaoTexto}>Salvar</Text>
