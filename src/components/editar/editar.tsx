@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
+import moment from "moment";
 import { styles } from "./styled";
 
 type EditarModalProps = {
@@ -17,6 +18,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
 }) => {
   const [editedValues, setEditedValues] = useState({ ...editedItem });
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidDate, setIsValidDate] = useState(true);
   const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
 
   const validateEmail = (email: string) => {
@@ -24,9 +26,15 @@ const EditarModal: React.FC<EditarModalProps> = ({
     return emailRegex.test(email);
   };
 
+  const validateDate = (date: string) => {
+    // Utilize moment para validar a data
+    return moment(date, "YYYY-MM-DD", true).isValid();
+  };
+
   const handleSave = () => {
     if (
       !validateEmail(editedValues.email) ||
+      !validateDate(editedValues.nascimento) ||
       !editedValues.nome ||
       !editedValues.sobrenome ||
       !editedValues.nascimento ||
@@ -34,11 +42,13 @@ const EditarModal: React.FC<EditarModalProps> = ({
       // Adicione validações para outros campos conforme necessário
     ) {
       setIsValidEmail(validateEmail(editedValues.email));
+      setIsValidDate(validateDate(editedValues.nascimento));
       setIsRequiredFieldEmpty(true);
       return;
     }
 
     setIsValidEmail(true);
+    setIsValidDate(true);
     setIsRequiredFieldEmpty(false);
     onEditar(editedValues);
     onCancel();
@@ -68,12 +78,19 @@ const EditarModal: React.FC<EditarModalProps> = ({
 
           <Text style={styles.modalLabel}>Data de Nascimento:</Text>
           <TextInput
-            style={styles.modalInput}
+            style={[styles.modalInput, !isValidDate && styles.invalidInput]}
             value={editedValues.nascimento}
-            onChangeText={(text) =>
-              setEditedValues((prev) => ({ ...prev, nascimento: text }))
-            }
+            onChangeText={(text) => {
+              setEditedValues((prev) => ({ ...prev, nascimento: text }));
+              setIsValidDate(true);
+              setIsRequiredFieldEmpty(false);
+            }}
           />
+          {!isValidDate && (
+            <Text style={styles.invalidText}>
+              Digite uma data de nascimento válida.
+            </Text>
+          )}
 
           <Text style={styles.modalLabel}>Email:</Text>
           <TextInput
@@ -98,7 +115,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
             }
           />
 
-          {/* Adicione inputs para outros campos conforme necessário */}
+         
 
           {isRequiredFieldEmpty && (
             <Text style={styles.invalidText}>
