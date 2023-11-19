@@ -4,6 +4,7 @@ import { View, FlatList, Text, ScrollView } from "react-native";
 import RenderizarItem from "../../components/card/card";
 import { styles } from "./styled";
 import { Box, VStack } from "native-base";
+import api from "../../service/integracao";
 
 const Home = () => {
   const [dados, setDados] = useState([]);
@@ -11,10 +12,8 @@ const Home = () => {
   useEffect(() => {
     async function pegarDados() {
       try {
-        const response = await axios.get(
-          "http://10.0.2.2:8000/api/formulario/"
+        const response = await api.get("/formulario"
         );
-        console.log("itens api", response.data);
         setDados(response.data);
       } catch (error) {
         console.error("Erro ao buscar dados:", error.message);
@@ -24,35 +23,51 @@ const Home = () => {
     pegarDados();
   }, []);
 
-    const handleEditar = (item) => {
-      // Lógica para ação de editar
-      console.log("Editar:", item);
-    };
+     const handleEditar = async (editedItem) => {
+       try {
+         // Fazer a requisição PUT para o backend com os dados atualizados
+         await api.put(`/formulario/${editedItem.id}`, editedItem);
 
-    const handleDeletar = (itemId) => {
-      // Lógica para ação de deletar
-      console.log("Deletar:", itemId);
+         // Atualizar a lista com os dados atualizados
+         setDados((prevDados) =>
+           prevDados.map((item) =>
+             item.id === editedItem.id ? editedItem : item
+           )
+         );
+       } catch (error) {
+         console.error("Erro ao editar item:", error.message);
+       }
+     };
+
+
+    const handleDeletar = async (itemId) => {
+      try {
+        // Fazer a requisição DELETE para o backend
+        await api.delete(`/formulario/${itemId}`);
+
+        // Atualizar a lista removendo o item excluído
+        setDados((prevDados) => prevDados.filter((item) => item.id !== itemId));
+      } catch (error) {
+        console.error("Erro ao deletar item:", error.message);
+      }
     };
 
   return (
     <ScrollView>
+      <VStack flex={1} p={5}>
+        <Box>
+          <Text style={styles.titulo}>Lista de usuários:</Text>
 
-    <VStack flex={1} p={5}>
-      <Box>
-        <Text style={styles.titulo}>Lista de usuários:</Text>
-        <FlatList
-          data={dados}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
+          {dados.map((item) => (
             <RenderizarItem
+              key={item.id}
               item={item}
               onEditar={handleEditar}
               onDeletar={handleDeletar}
             />
-          )}
-        />
-      </Box>
-    </VStack>
+          ))}
+        </Box>
+      </VStack>
     </ScrollView>
   );
 };
