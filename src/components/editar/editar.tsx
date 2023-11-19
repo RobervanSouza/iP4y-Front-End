@@ -17,6 +17,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
 }) => {
   const [editedValues, setEditedValues] = useState({ ...editedItem });
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,12 +25,21 @@ const EditarModal: React.FC<EditarModalProps> = ({
   };
 
   const handleSave = () => {
-    if (!validateEmail(editedValues.email)) {
-      setIsValidEmail(false);
+    if (
+      !validateEmail(editedValues.email) ||
+      !editedValues.nome ||
+      !editedValues.sobrenome ||
+      !editedValues.nascimento ||
+      !editedValues.genero
+      // Adicione validações para outros campos conforme necessário
+    ) {
+      setIsValidEmail(validateEmail(editedValues.email));
+      setIsRequiredFieldEmpty(true);
       return;
     }
 
     setIsValidEmail(true);
+    setIsRequiredFieldEmpty(false);
     onEditar(editedValues);
     onCancel();
   };
@@ -72,6 +82,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
             onChangeText={(text) => {
               setEditedValues((prev) => ({ ...prev, email: text }));
               setIsValidEmail(true);
+              setIsRequiredFieldEmpty(false);
             }}
           />
           {!isValidEmail && (
@@ -88,6 +99,12 @@ const EditarModal: React.FC<EditarModalProps> = ({
           />
 
           {/* Adicione inputs para outros campos conforme necessário */}
+
+          {isRequiredFieldEmpty && (
+            <Text style={styles.invalidText}>
+              Todos os campos são obrigatórios.
+            </Text>
+          )}
 
           <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
             <Text style={styles.botaoTexto}>Salvar</Text>
