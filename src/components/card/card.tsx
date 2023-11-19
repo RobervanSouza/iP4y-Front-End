@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styled";
-import { Box } from "native-base";
+import EditarModal from "../editar/editar"; // Importe o componente EditarModal
 
 type RenderizarItemProps = {
   item: {
@@ -13,8 +13,8 @@ type RenderizarItemProps = {
     cpf: string;
     id: number;
   };
-  onEditar: (item: any) => void; 
-  onDeletar: (itemId: number) => void; 
+  onDeletar: (itemId: number) => void;
+  onEditar: (editedItem: any) => void;
 };
 
 const RenderizarItem: React.FC<RenderizarItemProps> = ({
@@ -22,67 +22,44 @@ const RenderizarItem: React.FC<RenderizarItemProps> = ({
   onDeletar,
   onEditar,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
 
-    
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedItem, setEditedItem] = useState({
-    nome: item.nome,
-    sobrenome: item.sobrenome,
-    nascimento: item.nascimento,
-    email: item.email,
-    genero: item.genero,
-    cpf: item.cpf,
-});
-
-
-const handleSave = () => {
+  const handleSave = (editedItem) => {
+    onEditar(editedItem);
     setIsEditing(false);
-    // Passe o item editado para a função de edição no componente pai
-    onEditar({ ...item, ...editedItem });
-};
+  };
 
-return (
-  <View style={styles.card}>
-    {isEditing ? (
-      <View>
-        <Text>Nome:</Text>
-        <TextInput
-          value={editedItem.nome}
-          onChangeText={(text) =>
-            setEditedItem((prev) => ({ ...prev, nome: text }))
-          }
-        />
-        {/* Adicione inputs para os outros campos do formulário */}
+  return (
+    <View style={styles.card}>
+      <Text>{`Nome: ${item.nome}`}</Text>
+      <Text>{`Sobrenome: ${item.sobrenome}`}</Text>
+      <Text>{`Nascimento: ${item.nascimento}`}</Text>
+      <Text>{`Email: ${item.email}`}</Text>
+      <Text>{`Gênero: ${item.genero}`}</Text>
+      <Text>{`CPF: ${item.cpf}`}</Text>
+
+      <View style={styles.botoesContainer}>
+        {isEditing ? (
+          // Modal de Edição
+          <EditarModal
+            isVisible={isEditing}
+            onEditar={handleSave}
+            onCancel={() => setIsEditing(false)}
+            editedItem={item}
+          />
+        ) : (
+          <>
+            <TouchableOpacity onPress={() => setIsEditing(true)}>
+              <Text style={styles.botaoEditar}>Editar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => onDeletar(item.id)}>
+              <Text style={styles.botaoDeletar}>Deletar</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
-    ) : (
-      <>
-        <Text>{`Nome: ${item.nome}`}</Text>
-        <Text>{`Sobrenome: ${item.sobrenome}`}</Text>
-        <Text>{`Nascimento: ${item.nascimento}`}</Text>
-        <Text>{`Email: ${item.email}`}</Text>
-        <Text>{`Gênero: ${item.genero}`}</Text>
-        <Text>{`CPF: ${item.cpf}`}</Text>
-      </>
-    )}
-
-    <View style={styles.botoesContainer}>
-      {isEditing ? (
-        <TouchableOpacity onPress={handleSave}>
-          <Text style={styles.botaoEditar}>Salvar</Text>
-        </TouchableOpacity>
-      ) : (
-        <>
-          <TouchableOpacity onPress={() => setIsEditing(true)}>
-            <Text style={styles.botaoEditar}>Editar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => onDeletar(item.id)}>
-            <Text style={styles.botaoDeletar}>Deletar</Text>
-          </TouchableOpacity>
-        </>
-      )}
     </View>
-  </View>
-);
-}
+  );
+};
 
 export default RenderizarItem;
