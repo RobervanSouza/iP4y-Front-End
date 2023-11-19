@@ -1,6 +1,9 @@
+// Seu modal de edição
 import React, { useState } from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
 import moment from "moment";
+import cpfCheck from "cpf-check";
+
 import { styles } from "./styled";
 
 type EditarModalProps = {
@@ -20,6 +23,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidDate, setIsValidDate] = useState(true);
   const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
+  const [isValidCPF, setIsValidCPF] = useState(true);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,30 +31,57 @@ const EditarModal: React.FC<EditarModalProps> = ({
   };
 
   const validateDate = (date: string) => {
-    // Utilize moment para validar a data
+
     return moment(date, "YYYY-MM-DD", true).isValid();
   };
 
+ const validateCPF = (cpf: string) => {
+   const isValid = cpfCheck.validate(cpf);
+   setIsValidCPF(isValid);
+   return isValid;
+ };
+
+ const formatCPF = (cpf: string) => {
+   // Remove caracteres não numéricos do CPF
+   const numericCPF = cpf.replace(/\D/g, "");
+
+   // Aplica a máscara ao CPF durante a digitação
+   const formattedCPF = numericCPF.replace(
+     /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
+     "$1.$2.$3-$4"
+   );
+
+   return formattedCPF;
+ };
+
   const handleSave = () => {
+    const cpfForValidation = editedValues.cpf.replace(/[.-]/g, "");
+  
+
+
+    
     if (
       !validateEmail(editedValues.email) ||
       !validateDate(editedValues.nascimento) ||
       !editedValues.nome ||
       !editedValues.sobrenome ||
       !editedValues.nascimento ||
-      !editedValues.genero
+      !editedValues.genero ||
       // Adicione validações para outros campos conforme necessário
+      !validateCPF(editedValues.cpf)
     ) {
       setIsValidEmail(validateEmail(editedValues.email));
       setIsValidDate(validateDate(editedValues.nascimento));
+      setIsValidCPF(validateCPF(editedValues.cpf));
       setIsRequiredFieldEmpty(true);
       return;
     }
 
     setIsValidEmail(true);
     setIsValidDate(true);
+    setIsValidCPF(true);
     setIsRequiredFieldEmpty(false);
-    onEditar(editedValues);
+    onEditar({ ...editedValues, cpf: cpfForValidation });
     onCancel();
   };
 
@@ -115,7 +146,19 @@ const EditarModal: React.FC<EditarModalProps> = ({
             }
           />
 
-         
+          <Text style={styles.modalLabel}>CPF:</Text>
+          <TextInput
+            style={[styles.modalInput, !isValidCPF && styles.invalidInput]}
+            value={formatCPF(editedValues.cpf)}
+            onChangeText={(text) => {
+              setEditedValues((prev) => ({ ...prev, cpf: text }));
+              setIsValidCPF(true);
+              setIsRequiredFieldEmpty(false);
+            }}
+          />
+          {!isValidCPF && (
+            <Text style={styles.invalidText}>Digite um CPF válido.</Text>
+          )}
 
           {isRequiredFieldEmpty && (
             <Text style={styles.invalidText}>
