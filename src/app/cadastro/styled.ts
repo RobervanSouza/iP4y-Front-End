@@ -12,8 +12,9 @@ export const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
+    borderColor: "black",
+    borderWidth: 2,
+    borderRadius: 12,
     marginBottom: 12,
     paddingHorizontal: 8,
   },
@@ -32,5 +33,14 @@ export const styles = StyleSheet.create({
   },
   erroMensagem: {
     backgroundColor: "red",
+  },
+  erroInput: {
+    alignSelf: "center",
+    color: "red",
+    marginBottom: 8,
+  },
+  invalidText: {
+    color: "red", 
+    marginTop: 1,
   },
 });

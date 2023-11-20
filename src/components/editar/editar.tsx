@@ -5,6 +5,7 @@ import moment from "moment";
 import cpfCheck from "cpf-check";
 
 import { styles } from "./styled";
+import { ScrollView } from "native-base";
 
 type EditarModalProps = {
   isVisible: boolean;
@@ -91,99 +92,98 @@ const EditarModal: React.FC<EditarModalProps> = ({
   };
 
   return (
-    <Modal transparent={true} animationType="slide" visible={isVisible}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalLabel}>Nome:</Text>
-          <TextInput
-            style={styles.modalInput}
-            value={editedValues.nome}
-            onChangeText={(text) =>
-              setEditedValues((prev) => ({ ...prev, nome: text }))
-            }
-          />
+    <ScrollView>
+      <Modal transparent={true} animationType="slide" visible={isVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalLabel}>Nome:</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={editedValues.nome}
+              onChangeText={(text) =>
+                setEditedValues((prev) => ({ ...prev, nome: text }))
+              }
+            />
 
-          <Text style={styles.modalLabel}>Sobrenome:</Text>
-          <TextInput
-            style={styles.modalInput}
-            value={editedValues.sobrenome}
-            onChangeText={(text) =>
-              setEditedValues((prev) => ({ ...prev, sobrenome: text }))
-            }
-          />
+            <Text style={styles.modalLabel}>Sobrenome:</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={editedValues.sobrenome}
+              onChangeText={(text) =>
+                setEditedValues((prev) => ({ ...prev, sobrenome: text }))
+              }
+            />
 
-          <Text style={styles.modalLabel}>Data de Nascimento:</Text>
-          <TextInput
-            style={[styles.modalInput, !isValidDate && styles.invalidInput]}
-            value={editedValues.nascimento}
-            onChangeText={(text) => {
-              setEditedValues((prev) => ({ ...prev, nascimento: text }));
-              setIsValidDate(true);
-              setIsRequiredFieldEmpty(false);
-            }}
-          />
-          {!isValidDate && (
-            <Text style={styles.invalidText}>
-              Digite uma data de nascimento válida.
-            </Text>
-          )}
+            <Text style={styles.modalLabel}>Data de Nascimento:</Text>
+            <TextInput
+              style={[styles.modalInput, !isValidDate && styles.invalidInput]}
+              value={editedValues.nascimento}
+              onChangeText={(text) => {
+                setEditedValues((prev) => ({ ...prev, nascimento: text }));
+                setIsValidDate(true);
+                setIsRequiredFieldEmpty(false);
+              }}
+            />
+            {!isValidDate && (
+              <Text style={styles.invalidText}>
+                Digite uma data de nascimento válida.
+              </Text>
+            )}
 
-          <Text style={styles.modalLabel}>Email:</Text>
-          <TextInput
-            style={[styles.modalInput, !isValidEmail && styles.invalidInput]}
-            value={editedValues.email}
-            onChangeText={(text) => {
-              setEditedValues((prev) => ({ ...prev, email: text }));
-              setIsValidEmail(true);
-              setIsRequiredFieldEmpty(false);
-            }}
-          />
-          {!isValidEmail && (
-            <Text style={styles.invalidText}>Digite um e-mail válido.</Text>
-          )}
+            <Text style={styles.modalLabel}>Email:</Text>
+            <TextInput
+              style={[styles.modalInput, !isValidEmail && styles.invalidInput]}
+              value={editedValues.email}
+              onChangeText={(text) => {
+                setEditedValues((prev) => ({ ...prev, email: text }));
+                setIsValidEmail(true);
+                setIsRequiredFieldEmpty(false);
+              }}
+            />
+            {!isValidEmail && (
+              <Text style={styles.invalidText}>Digite um e-mail válido.</Text>
+            )}
 
-          <Text style={styles.modalLabel}>Gênero:</Text>
-          <TextInput
-            style={styles.modalInput}
-            value={editedValues.genero}
-            onChangeText={(text) =>
-              setEditedValues((prev) => ({ ...prev, genero: text }))
-            }
-          />
+            <Text style={styles.modalLabel}>Gênero:</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={editedValues.genero}
+              onChangeText={(text) =>
+                setEditedValues((prev) => ({ ...prev, genero: text }))
+              }
+            />
 
-          <Text style={styles.modalLabel}>CPF:</Text>
-          <TextInput
-            style={[styles.modalInput, !isValidCPF && styles.invalidInput]}
-            value={formatCPF(editedValues.cpf)}
-            onChangeText={(text) => {
-              setEditedValues((prev) => ({ ...prev, cpf: text }));
-              setIsValidCPF(true);
-              setIsRequiredFieldEmpty(false);
-            }}
-          />
+            <Text style={styles.modalLabel}>CPF:</Text>
+            <TextInput
+              style={[styles.modalInput, !isValidCPF && styles.invalidInput]}
+              value={formatCPF(editedValues.cpf)}
+              onChangeText={(text) => {
+                setEditedValues((prev) => ({ ...prev, cpf: text }));
+                setIsValidCPF(true);
+                setIsRequiredFieldEmpty(false);
+              }}
+            />
 
-        
-        
+            {!isValidCPF && (
+              <Text style={styles.invalidText}>Digite um CPF válido.</Text>
+            )}
 
-          {!isValidCPF && (
-            <Text style={styles.invalidText}>Digite um CPF válido.</Text>
-          )}
+            {isRequiredFieldEmpty && (
+              <Text style={styles.invalidText}>
+                Todos os campos são obrigatórios.
+              </Text>
+            )}
 
-          {isRequiredFieldEmpty && (
-            <Text style={styles.invalidText}>
-              Todos os campos são obrigatórios.
-            </Text>
-          )}
-
-          <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
-            <Text style={styles.botaoTexto}>Salvar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onCancel} style={styles.botaoCancelar}>
-            <Text style={styles.botaoTexto}>Cancelar</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
+              <Text style={styles.botaoTexto}>Salvar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onCancel} style={styles.botaoCancelar}>
+              <Text style={styles.botaoTexto}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </ScrollView>
   );
 };
 
