@@ -30,4 +30,7 @@ export const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
+  erroMensagem: {
+    backgroundColor: "red",
+  },
 });

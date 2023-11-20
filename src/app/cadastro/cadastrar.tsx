@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, Button, Text} from "react-native";
 import moment from "moment";
 import cpfCheck from "cpf-check";
 import { ScrollView } from "native-base";
@@ -25,6 +25,7 @@ const navigation = useNavigation();
   const [isValidDate, setIsValidDate] = useState(true);
   const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
   const [isValidCPF, setIsValidCPF] = useState(true);
+  const [erroMensagem, setErroMensagem] = useState(null);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,16 +84,24 @@ const navigation = useNavigation();
 
     // Simulando um cadastro bem-sucedido
      try {
+         setErroMensagem(null);
        // Fazer a requisição POST para o backend
        const response = await api.post("/formulario", dadosFuncionario);
 
        // Aqui você pode lidar com a resposta, se necessário
        console.log("Funcionário cadastrado com sucesso:", response.data);
-alert("Funcionário cadastrado com sucesso")
+       alert("Funcionário cadastrado com sucesso")
        // Navegar para a tela Home após o cadastro
        
      } catch (error) {
-       console.error("Erro ao cadastrar funcionário:", error.message);
+         
+          setErroMensagem(
+            `Cpf ja esta cadastrado, Digite outro cpf!!!`
+          );
+            setTimeout(() => {
+              setErroMensagem(null);
+            }, 5000);
+        
      }
 }
   return (
@@ -153,8 +162,9 @@ alert("Funcionário cadastrado com sucesso")
           setDadosFuncionario((prev) => ({ ...prev, cpf: text }))
         }
       />
-      {/* Restante dos TextInput e outros elementos */}
+      {erroMensagem && <Text style={styles.erroMensagem}>{erroMensagem}</Text>}
       <Button title="Cadastrar" onPress={cadastrarFuncionario} />
+      {/* Restante do código */}
       {/* Restante do código */}
     </ScrollView>
   );
