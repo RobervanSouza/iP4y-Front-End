@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Text, ScrollView } from "react-native";
+import { View, FlatList, Text, ScrollView, Button, TouchableOpacity } from "react-native";
 import RenderizarItem from "../../components/card/card";
 import { styles } from "./styled";
 import { Box, VStack } from "native-base";
 import api from "../../service/integracao";
 
-const Home = () => {
+const Home = ({navigation} ) => {
   const [dados, setDados] = useState([]);
   const [erroMensagem, setErroMensagem] = useState(null);
 
@@ -65,15 +65,24 @@ const Home = () => {
     <ScrollView>
       <VStack flex={1} p={5}>
         <Box>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#007BFF",
+              padding: 10,
+              borderRadius: 5,
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("cadastro")}>
+            <Text style={{ color: "white" }}>Cadastrar</Text>
+          </TouchableOpacity>
           <Text style={styles.titulo}>Lista de usuários:</Text>
-          
+
           {dados.map((item) => (
             <RenderizarItem
               key={item.id}
               item={item}
               onEditar={handleEditar}
               onDeletar={handleDeletar}
-              
             />
           ))}
 
