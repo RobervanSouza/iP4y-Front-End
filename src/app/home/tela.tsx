@@ -42,6 +42,9 @@ const Home = () => {
           setErroMensagem(
             `Cpf ja esta cadastrado, Digite outro cpf!!!`
           );
+            setTimeout(() => {
+              setErroMensagem(null);
+            }, 5000);
         }
       };
 
