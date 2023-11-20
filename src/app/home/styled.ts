@@ -7,12 +7,15 @@ export const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width:"100%",
+    width: "100%",
   },
   titulo: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     color: "blue",
+  },
+  erroMensagem:{
+    backgroundColor: "red",
   },
 });

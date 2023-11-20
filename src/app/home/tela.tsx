@@ -8,6 +8,7 @@ import api from "../../service/integracao";
 
 const Home = () => {
   const [dados, setDados] = useState([]);
+  const [erroMensagem, setErroMensagem] = useState(null);
 
   useEffect(() => {
     async function pegarDados() {
@@ -23,21 +24,26 @@ const Home = () => {
     pegarDados();
   }, []);
 
-     const handleEditar = async (editedItem) => {
-       try {
-         // Fazer a requisição PUT para o backend com os dados atualizados
-         await api.put(`/formulario/${editedItem.id}`, editedItem);
+      const handleEditar = async (editedItem) => {
+        try {
+          // Limpar mensagens de erro anteriores
+            setErroMensagem(null);
+           
+          // Fazer a requisição PUT para o backend com os dados atualizados
+          await api.put(`/formulario/${editedItem.id}`, editedItem);
 
-         // Atualizar a lista com os dados atualizados
-         setDados((prevDados) =>
-           prevDados.map((item) =>
-             item.id === editedItem.id ? editedItem : item
-           )
-         );
-       } catch (error) {
-         console.error("Erro ao editar item:", error.message);
-       }
-     };
+          // Atualizar a lista com os dados atualizados
+          setDados((prevDados) =>
+            prevDados.map((item) =>
+              item.id === editedItem.id ? editedItem : item
+            )
+          );
+        } catch (error) {
+          setErroMensagem(
+            `Cpf ja esta cadastrado, Digite outro cpf!!!`
+          );
+        }
+      };
 
 
     const handleDeletar = async (itemId) => {
@@ -57,15 +63,20 @@ const Home = () => {
       <VStack flex={1} p={5}>
         <Box>
           <Text style={styles.titulo}>Lista de usuários:</Text>
-
+          
           {dados.map((item) => (
             <RenderizarItem
               key={item.id}
               item={item}
               onEditar={handleEditar}
               onDeletar={handleDeletar}
+              
             />
           ))}
+
+          {erroMensagem && (
+            <Text style={styles.erroMensagem}>{erroMensagem}</Text>
+          )}
         </Box>
       </VStack>
     </ScrollView>

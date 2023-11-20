@@ -24,6 +24,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
   const [isValidDate, setIsValidDate] = useState(true);
   const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
   const [isValidCPF, setIsValidCPF] = useState(true);
+  
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -69,13 +70,17 @@ const EditarModal: React.FC<EditarModalProps> = ({
       !editedValues.genero ||
       // Adicione validações para outros campos conforme necessário
       !validateCPF(editedValues.cpf)
+      
     ) {
       setIsValidEmail(validateEmail(editedValues.email));
       setIsValidDate(validateDate(editedValues.nascimento));
       setIsValidCPF(validateCPF(editedValues.cpf));
       setIsRequiredFieldEmpty(true);
+
+
       return;
     }
+
 
     setIsValidEmail(true);
     setIsValidDate(true);
@@ -156,6 +161,10 @@ const EditarModal: React.FC<EditarModalProps> = ({
               setIsRequiredFieldEmpty(false);
             }}
           />
+
+        
+        
+
           {!isValidCPF && (
             <Text style={styles.invalidText}>Digite um CPF válido.</Text>
           )}

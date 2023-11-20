@@ -15,6 +15,7 @@ type RenderizarItemProps = {
   };
   onDeletar: (itemId: number) => void;
   onEditar: (editedItem: any) => void;
+  
 };
 
 const RenderizarItem: React.FC<RenderizarItemProps> = ({

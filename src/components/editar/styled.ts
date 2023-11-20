@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-  
 
   invalidInput: {
     borderColor: "red", // Adapte conforme necessário
@@ -55,6 +54,7 @@ export const styles = StyleSheet.create({
     color: "red", // Adapte conforme necessário
     marginTop: 5,
   },
-
-
+  inputComErro: {
+    backgroundColor: "red",
+  }
 });
