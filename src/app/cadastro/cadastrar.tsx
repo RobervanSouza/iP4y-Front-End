@@ -7,10 +7,11 @@ import { styles } from "./styled";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../service/integracao";
 import { TextInput } from "react-native-paper";
+import { validaEmail } from "../../utils/validandoEmail";
+import { validaData } from "../../utils/validaData";
 
 const CadastroFuncionario = () => {
-  const navigation = useNavigation();
-
+  
   const [dadosFuncionario, setDadosFuncionario] = useState({
     cpf: "",
     nome: "",
@@ -26,14 +27,9 @@ const CadastroFuncionario = () => {
   const [isValidCPF, setIsValidCPF] = useState(true);
   const [erroMensagem, setErroMensagem] = useState(null);
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+ 
 
-  const validateDate = (date) => {
-    return moment(date, "YYYY-MM-DD", true).isValid();
-  };
+ 
 
   const validateCPF = (cpf: string) => {
     const isValid = cpfCheck.validate(cpf);
@@ -41,7 +37,7 @@ const CadastroFuncionario = () => {
     return isValid;
   };
 
-  const formatCPF = (cpf) => {
+  const formataCPF = (cpf) => {
     const numericCPF = cpf.replace(/[^\d]/g, "");
 
     if (numericCPF.length <= 11) {
@@ -55,19 +51,19 @@ const CadastroFuncionario = () => {
   };
 
   const cadastrarFuncionario = async () => {
-    const cpfForValidation = dadosFuncionario.cpf.replace(/[.-]/g, "");
+   
 
     if (
-      !validateEmail(dadosFuncionario.email) ||
-      !validateDate(dadosFuncionario.nascimento) ||
+      !validaEmail(dadosFuncionario.email) ||
+      !validaData(dadosFuncionario.nascimento) ||
       !dadosFuncionario.nome ||
       !dadosFuncionario.sobrenome ||
       !dadosFuncionario.nascimento ||
       !dadosFuncionario.genero ||
       !validateCPF(dadosFuncionario.cpf)
     ) {
-      setIsValidEmail(validateEmail(dadosFuncionario.email));
-      setIsValidDate(validateDate(dadosFuncionario.nascimento));
+      setIsValidEmail(validaEmail(dadosFuncionario.email));
+      setIsValidDate(validaData(dadosFuncionario.nascimento));
       setIsValidCPF(validateCPF(dadosFuncionario.cpf));
       setIsRequiredFieldEmpty(true);
       return;
@@ -116,7 +112,7 @@ const CadastroFuncionario = () => {
       <TextInput
         style={[styles.input, !isValidCPF && styles.invalidInput]}
         placeholder="CPF"
-        value={formatCPF(dadosFuncionario.cpf)}
+        value={formataCPF(dadosFuncionario.cpf)}
         onChangeText={(text) => {
           setDadosFuncionario((prev) => ({ ...prev, cpf: text }));
           setIsValidCPF(true);

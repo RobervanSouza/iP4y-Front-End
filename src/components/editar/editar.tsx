@@ -1,11 +1,13 @@
 // Seu modal de edição
 import React, { useState } from "react";
 import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
-import moment from "moment";
+
 import cpfCheck from "cpf-check";
 
 import { styles } from "./styled";
 import { ScrollView } from "native-base";
+import { validaEmail } from "../../utils/validandoEmail";
+import { validaData } from "../../utils/validaData";
 
 type EditarModalProps = {
   isVisible: boolean;
@@ -26,16 +28,6 @@ const EditarModal: React.FC<EditarModalProps> = ({
   const [isRequiredFieldEmpty, setIsRequiredFieldEmpty] = useState(false);
   const [isValidCPF, setIsValidCPF] = useState(true);
   
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validateDate = (date: string) => {
-
-    return moment(date, "YYYY-MM-DD", true).isValid();
-  };
 
  const validateCPF = (cpf: string) => {
    const isValid = cpfCheck.validate(cpf);
@@ -63,8 +55,8 @@ const EditarModal: React.FC<EditarModalProps> = ({
 
     
     if (
-      !validateEmail(editedValues.email) ||
-      !validateDate(editedValues.nascimento) ||
+      !validaEmail(editedValues.email) ||
+      !validaData(editedValues.nascimento) ||
       !editedValues.nome ||
       !editedValues.sobrenome ||
       !editedValues.nascimento ||
@@ -73,8 +65,8 @@ const EditarModal: React.FC<EditarModalProps> = ({
       !validateCPF(editedValues.cpf)
       
     ) {
-      setIsValidEmail(validateEmail(editedValues.email));
-      setIsValidDate(validateDate(editedValues.nascimento));
+      setIsValidEmail(validaEmail(editedValues.email));
+      setIsValidDate(validaData(editedValues.nascimento));
       setIsValidCPF(validateCPF(editedValues.cpf));
       setIsRequiredFieldEmpty(true);
 
@@ -92,7 +84,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
   };
 
   return (
-    <ScrollView>
+    <ScrollView >
       <Modal transparent={true} animationType="slide" visible={isVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
