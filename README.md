@@ -1,7 +1,18 @@
-# ip4y-front
+
+# iP4y
 ## Sistema de Cadastro de Usuários em React Native
-### Este projeto consiste em um aplicativo de cadastro de usuários desenvolvido em React Native. Ele oferece funcionalidades como adicionar, editar, visualizar e excluir informações de usuários. O aplicativo também inclui validação de todos os campos.
+## Descrição do Projeto
+### Este projeto é um aplicativo de cadastro de usuários desenvolvido em React Native. Ele oferece funcionalidades como adicionar, editar, visualizar e excluir informações de usuários. Além disso, o aplicativo inclui validações abrangentes para garantir a integridade dos dados.
 
-### O aplicativo tem a funcionalidade de validação de email, CPF e Data de nascimento, Tambem se já existir um cpf no banco de dados ele não faz o cadostro e nem o a edição.
+## Funcionalidades Principais
+### Cadastro e Edição de Usuários: Permite adicionar novos usuários ou editar informações existentes.
+### Visualização Detalhada: Oferece uma interface intuitiva para visualizar detalhes dos usuários cadastrados.
+### Exclusão de Usuários: Permite remover registros de usuários do sistema.
+## Validações Avançadas
+### O aplicativo inclui validações robustas para garantir dados consistentes e confiáveis:
 
-### O aplicativo esta conectador diretamente com o banco de dados, sendo assim todos os dados alterados no aplicativo, tambem e alterado no banco de dados.
+### Validação de E-mail: Verifica se o formato do e-mail é válido.
+### Validação de CPF: Utiliza a biblioteca cpf-check para garantir a validade dos CPFs e evitar duplicatas no banco de dados.
+###  Validação de Data de Nascimento: Utiliza o Moment.js para validar a data de nascimento.
+## Integração com Banco de Dados
+### O aplicativo está conectado a um banco de dados, permitindo que todas as alterações realizadas no aplicativo também sejam refletidas no banco de dados. Isso garante consistência e persistência dos dados.
