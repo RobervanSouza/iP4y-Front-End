@@ -43,7 +43,7 @@ const Home = ({ navigation }) => {
         prevDados.map((item) => (item.id === editedItem.id ? editedItem : item))
       );
     } catch (error) {
-      setErroMensagem(`Cpf já cadastrado, digite outro cpf!!!`);
+      setErroMensagem(`Cpf ou Email já cadastrado, digite outro cpf!!!`);
       setTimeout(() => {
         setErroMensagem(null);
       }, 5000);
