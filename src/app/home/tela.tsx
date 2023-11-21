@@ -8,7 +8,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import RenderizarItem from "../../components/card/card";
+import Cards from "../../components/card/card";
 import { styles } from "./styled";
 import { Box, VStack } from "native-base";
 import api from "../../service/integracao";
@@ -92,7 +92,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.titulo}>Lista de usuários:</Text>
 
           {dados.map((item) => (
-            <RenderizarItem
+            <Cards
               key={item.id}
               item={item}
               onEditar={handleEditar}

@@ -3,23 +3,10 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styled";
 import EditarModal from "../editar/editar"; // Importe o componente EditarModal
 import { Box, Center, ScrollView } from "native-base";
+import { CardsProps } from "../../utils/interfaceCards";
 
-type RenderizarItemProps = {
-  item: {
-    nome: string;
-    sobrenome: string;
-    nascimento: string;
-    email: string;
-    genero: string;
-    cpf: string;
-    id: number;
-  };
-  onDeletar: (itemId: number) => void;
-  onEditar: (editedItem: any) => void;
-  
-};
 
-const RenderizarItem: React.FC<RenderizarItemProps> = ({
+const Cards: React.FC<CardsProps> = ({
   item,
   onDeletar,
   onEditar,
@@ -75,7 +62,7 @@ const RenderizarItem: React.FC<RenderizarItemProps> = ({
             />
           ) : (
             <>
-              <Box
+              <Box 
                 backgroundColor="green.600"
                 w={122}
                 alignItems="center"
@@ -107,4 +94,4 @@ const RenderizarItem: React.FC<RenderizarItemProps> = ({
   );
 };
 
-export default RenderizarItem;
+export default Cards;

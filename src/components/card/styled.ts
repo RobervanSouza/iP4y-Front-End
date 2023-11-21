@@ -9,11 +9,11 @@ export const styles = StyleSheet.create({
     padding: 6,
     marginBottom: 7,
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 6,
+    flexDirection: "column",
+
+    gap: 1,
   },
   botoesContainer: {
     flexDirection: "row",
