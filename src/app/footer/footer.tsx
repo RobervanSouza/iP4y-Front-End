@@ -1,16 +1,22 @@
+import { View } from "native-base";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, Linking } from "react-native";
 import { styles } from "./styles";
 
 const Footer = () => {
+  const url = "https://www.linkedin.com/in/robervan-souza/";
+
   return (
     <View style={styles.footer}>
-      <Text style={styles.footerText}>Desenvolvedor:</Text>
-      <Text style={styles.footerText}> @ Robervan Souza</Text>
+      <Text>
+        <Text style={styles.footerText} >Desenvolvedor:</Text>
+        <Text onPress={() => Linking.openURL(url)} style={styles.footerLink}>
+         
+          @ Robervan Souza
+        </Text>
+      </Text>
     </View>
   );
 };
-
-
 
 export default Footer;

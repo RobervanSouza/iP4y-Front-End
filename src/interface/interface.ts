@@ -1,4 +1,4 @@
-// Arquivo: dadosUsuario.ts
+
 
 export interface Formulario {
   cpf: string;

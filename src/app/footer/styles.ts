@@ -13,7 +13,12 @@ export const styles = StyleSheet.create({
     right: 0,
   },
   footerText: {
-    color: "#ffffff",
+    color: "white",
+    fontSize: 16,
+  },
+  footerLink: {
+    color: "blue",
+    
     fontSize: 16,
   },
 });

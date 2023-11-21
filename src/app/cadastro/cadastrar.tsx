@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Button, Text } from "react-native";
-import moment from "moment";
 import cpfCheck from "cpf-check";
-import { ScrollView } from "native-base";
+import { KeyboardAvoidingView, ScrollView } from "native-base";
 import { styles } from "./styled";
-import { useNavigation } from "@react-navigation/native";
 import api from "../../service/integracao";
 import { TextInput } from "react-native-paper";
 import { validaEmail } from "../../utils/validandoEmail";
@@ -74,12 +72,12 @@ const CadastroFuncionario = () => {
     setIsValidCPF(true);
     setIsRequiredFieldEmpty(false);
 
-    // Lógica para cadastro
+    
     console.log("Dados do cadastro:", dadosFuncionario);
 
     try {
       setErroMensagem(null);
-      // Fazer a requisição POST para o backend
+      
       const response = await api.post("/formulario", dadosFuncionario);
 
          setDadosFuncionario({
@@ -90,10 +88,10 @@ const CadastroFuncionario = () => {
            email: "",
            genero: "",
          });
-      // Aqui você pode lidar com a resposta, se necessário
+      
       console.log("Funcionário cadastrado com sucesso:", response.data);
       alert("Funcionário cadastrado com sucesso");
-      // Navegar para a tela Home após o cadastro
+     
     } catch (error) {
       setErroMensagem(
         `CPF já está cadastrado ou inválido. Digite outro CPF válido!!!`
@@ -108,87 +106,91 @@ const CadastroFuncionario = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TextInput
-        style={[styles.input, !isValidCPF && styles.invalidInput]}
-        placeholder="CPF"
-        value={formataCPF(dadosFuncionario.cpf)}
-        onChangeText={(text) => {
-          setDadosFuncionario((prev) => ({ ...prev, cpf: text }));
-          setIsValidCPF(true);
-          setIsRequiredFieldEmpty(false);
-        }}
-      />
+   
+      <ScrollView style={styles.container}  >
+        <TextInput
+          style={[styles.input, !isValidCPF && styles.invalidInput]}
+          placeholder="CPF"
+          value={formataCPF(dadosFuncionario.cpf)}
+          onChangeText={(text) => {
+            setDadosFuncionario((prev) => ({ ...prev, cpf: text }));
+            setIsValidCPF(true);
+            setIsRequiredFieldEmpty(false);
+          }}
+        />
 
-      {!isValidCPF && (
-        <Text style={styles.invalidText}>Digite um CPF válido.</Text>
-      )}
+        {!isValidCPF && (
+          <Text style={styles.invalidText}>Digite um CPF válido.</Text>
+        )}
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nome"
-        value={dadosFuncionario.nome}
-        onChangeText={(text) =>
-          setDadosFuncionario((prev) => ({ ...prev, nome: text }))
-        }
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome"
+          value={dadosFuncionario.nome}
+          onChangeText={(text) =>
+            setDadosFuncionario((prev) => ({ ...prev, nome: text }))
+          }
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Sobrenome"
-        value={dadosFuncionario.sobrenome}
-        onChangeText={(text) =>
-          setDadosFuncionario((prev) => ({ ...prev, sobrenome: text }))
-        }
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Sobrenome"
+          value={dadosFuncionario.sobrenome}
+          onChangeText={(text) =>
+            setDadosFuncionario((prev) => ({ ...prev, sobrenome: text }))
+          }
+        />
 
-      <TextInput
-        style={[styles.input, !isValidDate && styles.invalidInput]}
-        placeholder="Data de Nascimento (AAAA-MM-DD)"
-        value={dadosFuncionario.nascimento}
-        onChangeText={(text) => {
-          setDadosFuncionario((prev) => ({ ...prev, nascimento: text }));
-          setIsValidDate(true);
-          setIsRequiredFieldEmpty(false);
-        }}
-      />
-      {!isValidDate && (
-        <Text style={styles.invalidText}>
-          Digite uma data de nascimento válida.
-        </Text>
-      )}
+        <TextInput
+          style={[styles.input, !isValidDate && styles.invalidInput]}
+          placeholder="Data de Nascimento (AAAA-MM-DD)"
+          value={dadosFuncionario.nascimento}
+          onChangeText={(text) => {
+            setDadosFuncionario((prev) => ({ ...prev, nascimento: text }));
+            setIsValidDate(true);
+            setIsRequiredFieldEmpty(false);
+          }}
+        />
+        {!isValidDate && (
+          <Text style={styles.invalidText}>
+            Digite uma data de nascimento válida.
+          </Text>
+        )}
 
-      <TextInput
-        style={[styles.input, !isValidEmail && styles.invalidInput]}
-        placeholder="E-mail"
-        value={dadosFuncionario.email}
-        onChangeText={(text) => {
-          setDadosFuncionario((prev) => ({ ...prev, email: text }));
-          setIsValidEmail(true);
-          setIsRequiredFieldEmpty(false);
-        }}
-      />
-      {!isValidEmail && (
-        <Text style={styles.invalidText}>
-          E-mail invalido, digite um email valido!.
-        </Text>
-      )}
+        <TextInput
+          style={[styles.input, !isValidEmail && styles.invalidInput]}
+          placeholder="E-mail"
+          value={dadosFuncionario.email}
+          onChangeText={(text) => {
+            setDadosFuncionario((prev) => ({ ...prev, email: text }));
+            setIsValidEmail(true);
+            setIsRequiredFieldEmpty(false);
+          }}
+        />
+        {!isValidEmail && (
+          <Text style={styles.invalidText}>
+            E-mail invalido, digite um email valido!.
+          </Text>
+        )}
 
-      <TextInput
-        style={styles.input}
-        placeholder="Gênero"
-        value={dadosFuncionario.genero}
-        onChangeText={(text) =>
-          setDadosFuncionario((prev) => ({ ...prev, genero: text }))
-        }
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Gênero"
+          value={dadosFuncionario.genero}
+          onChangeText={(text) =>
+            setDadosFuncionario((prev) => ({ ...prev, genero: text }))
+          }
+        />
 
-      {erroMensagem && <Text style={styles.erroMensagem}>{erroMensagem}</Text>}
+        {erroMensagem && (
+          <Text style={styles.erroMensagem}>{erroMensagem}</Text>
+        )}
 
-      {isRequiredFieldEmpty && <Text>Todos os campos são obrigatórios.</Text>}
+        {isRequiredFieldEmpty && <Text>Todos os campos são obrigatórios.</Text>}
 
-      <Button title="Cadastrar" onPress={cadastrarFuncionario} />
-    </ScrollView>
+        <Button title="Cadastrar" onPress={cadastrarFuncionario} />
+      </ScrollView>
+    
   );
 };
 

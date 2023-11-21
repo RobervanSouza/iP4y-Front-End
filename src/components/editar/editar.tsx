@@ -1,11 +1,11 @@
 // Seu modal de edição
 import React, { useState } from "react";
-import { Modal, View, Text, TouchableOpacity, TextInput } from "react-native";
+import { Modal, View, Text, TouchableOpacity, TextInput, Platform } from "react-native";
 
 import cpfCheck from "cpf-check";
 
 import { styles } from "./styled";
-import { ScrollView } from "native-base";
+import { KeyboardAvoidingView, ScrollView } from "native-base";
 import { validaEmail } from "../../utils/validandoEmail";
 import { validaData } from "../../utils/validaData";
 
@@ -36,10 +36,7 @@ const EditarModal: React.FC<EditarModalProps> = ({
  };
 
  const formatCPF = (cpf: string) => {
-   // Remove caracteres não numéricos do CPF
    const numericCPF = cpf.replace(/\D/g, "");
-
-   // Aplica a máscara ao CPF durante a digitação
    const formattedCPF = numericCPF.replace(
      /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
      "$1.$2.$3-$4"
@@ -50,9 +47,6 @@ const EditarModal: React.FC<EditarModalProps> = ({
 
   const handleSave = () => {
     const cpfForValidation = editedValues.cpf.replace(/[.-]/g, "");
-  
-
-
     
     if (
       !validaEmail(editedValues.email) ||
@@ -61,7 +55,6 @@ const EditarModal: React.FC<EditarModalProps> = ({
       !editedValues.sobrenome ||
       !editedValues.nascimento ||
       !editedValues.genero ||
-      // Adicione validações para outros campos conforme necessário
       !validateCPF(editedValues.cpf)
       
     ) {
@@ -84,98 +77,106 @@ const EditarModal: React.FC<EditarModalProps> = ({
   };
 
   return (
-    <ScrollView >
-      <Modal transparent={true} animationType="slide" visible={isVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalLabel}>Nome:</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={editedValues.nome}
-              onChangeText={(text) =>
-                setEditedValues((prev) => ({ ...prev, nome: text }))
-              }
-            />
+      <Modal transparent={true}  visible={isVisible}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalLabel}>Nome:</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={editedValues.nome}
+                onChangeText={(text) =>
+                  setEditedValues((prev) => ({ ...prev, nome: text }))
+                }
+              />
 
-            <Text style={styles.modalLabel}>Sobrenome:</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={editedValues.sobrenome}
-              onChangeText={(text) =>
-                setEditedValues((prev) => ({ ...prev, sobrenome: text }))
-              }
-            />
+              <Text style={styles.modalLabel}>Sobrenome:</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={editedValues.sobrenome}
+                onChangeText={(text) =>
+                  setEditedValues((prev) => ({ ...prev, sobrenome: text }))
+                }
+              />
 
-            <Text style={styles.modalLabel}>Data de Nascimento:</Text>
-            <TextInput
-              style={[styles.modalInput, !isValidDate && styles.invalidInput]}
-              value={editedValues.nascimento}
-              onChangeText={(text) => {
-                setEditedValues((prev) => ({ ...prev, nascimento: text }));
-                setIsValidDate(true);
-                setIsRequiredFieldEmpty(false);
-              }}
-            />
-            {!isValidDate && (
-              <Text style={styles.invalidText}>
-                Digite uma data de nascimento válida.
-              </Text>
-            )}
+              <Text style={styles.modalLabel}>Data de Nascimento:</Text>
+              <TextInput
+                style={[styles.modalInput, !isValidDate && styles.invalidInput]}
+                value={editedValues.nascimento}
+                onChangeText={(text) => {
+                  setEditedValues((prev) => ({ ...prev, nascimento: text }));
+                  setIsValidDate(true);
+                  setIsRequiredFieldEmpty(false);
+                }}
+              />
+              {!isValidDate && (
+                <Text style={styles.invalidText}>
+                  Digite uma data de nascimento válida.
+                </Text>
+              )}
 
-            <Text style={styles.modalLabel}>Email:</Text>
-            <TextInput
-              style={[styles.modalInput, !isValidEmail && styles.invalidInput]}
-              value={editedValues.email}
-              onChangeText={(text) => {
-                setEditedValues((prev) => ({ ...prev, email: text }));
-                setIsValidEmail(true);
-                setIsRequiredFieldEmpty(false);
-              }}
-            />
-            {!isValidEmail && (
-              <Text style={styles.invalidText}>Digite um e-mail válido.</Text>
-            )}
+              <Text style={styles.modalLabel}>Email:</Text>
+              <TextInput
+                style={[
+                  styles.modalInput,
+                  !isValidEmail && styles.invalidInput,
+                ]}
+                value={editedValues.email}
+                onChangeText={(text) => {
+                  setEditedValues((prev) => ({ ...prev, email: text }));
+                  setIsValidEmail(true);
+                  setIsRequiredFieldEmpty(false);
+                }}
+              />
+              {!isValidEmail && (
+                <Text style={styles.invalidText}>Digite um e-mail válido.</Text>
+              )}
 
-            <Text style={styles.modalLabel}>Gênero:</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={editedValues.genero}
-              onChangeText={(text) =>
-                setEditedValues((prev) => ({ ...prev, genero: text }))
-              }
-            />
+              <Text style={styles.modalLabel}>Gênero:</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={editedValues.genero}
+                onChangeText={(text) =>
+                  setEditedValues((prev) => ({ ...prev, genero: text }))
+                }
+              />
 
-            <Text style={styles.modalLabel}>CPF:</Text>
-            <TextInput
-              style={[styles.modalInput, !isValidCPF && styles.invalidInput]}
-              value={formatCPF(editedValues.cpf)}
-              onChangeText={(text) => {
-                setEditedValues((prev) => ({ ...prev, cpf: text }));
-                setIsValidCPF(true);
-                setIsRequiredFieldEmpty(false);
-              }}
-            />
+              <Text style={styles.modalLabel}>CPF:</Text>
+              <TextInput
+                style={[styles.modalInput, !isValidCPF && styles.invalidInput]}
+                value={formatCPF(editedValues.cpf)}
+                onChangeText={(text) => {
+                  setEditedValues((prev) => ({ ...prev, cpf: text }));
+                  setIsValidCPF(true);
+                  setIsRequiredFieldEmpty(false);
+                }}
+              />
 
-            {!isValidCPF && (
-              <Text style={styles.invalidText}>Digite um CPF válido.</Text>
-            )}
+              {!isValidCPF && (
+                <Text style={styles.invalidText}>Digite um CPF válido.</Text>
+              )}
 
-            {isRequiredFieldEmpty && (
-              <Text style={styles.invalidText}>
-                Todos os campos são obrigatórios.
-              </Text>
-            )}
+              {isRequiredFieldEmpty && (
+                <Text style={styles.invalidText}>
+                  Todos os campos são obrigatórios.
+                </Text>
+              )}
 
-            <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
-              <Text style={styles.botaoTexto}>Salvar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onCancel} style={styles.botaoCancelar}>
-              <Text style={styles.botaoTexto}>Cancelar</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={handleSave} style={styles.botaoSalvar}>
+                <Text style={styles.botaoTexto}>Salvar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onCancel} style={styles.botaoCancelar}>
+                <Text style={styles.botaoTexto}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
-    </ScrollView>
+  
   );
 };
 

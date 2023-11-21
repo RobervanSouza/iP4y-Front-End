@@ -8,11 +8,13 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    
   },
   modalContent: {
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
+    marginTop: 10,
     width: "80%",
   },
   modalLabel: {
@@ -34,6 +36,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "green",
     padding: 10,
     borderRadius: 5,
+    marginBottom:12,
   },
   botaoCancelar: {
     backgroundColor: "red",
@@ -46,12 +49,12 @@ export const styles = StyleSheet.create({
   },
 
   invalidInput: {
-    borderColor: "red", // Adapte conforme necessário
+    borderColor: "red", 
     borderWidth: 1,
   },
 
   invalidText: {
-    color: "red", // Adapte conforme necessário
+    color: "red", 
     marginTop: 5,
   },
   inputComErro: {

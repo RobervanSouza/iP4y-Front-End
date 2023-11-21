@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styled";
-import EditarModal from "../editar/editar"; // Importe o componente EditarModal
-import { Box, Center, ScrollView } from "native-base";
+import EditarModal from "../editar/editar"; 
+import { Box, ScrollView } from "native-base";
 import { CardsProps } from "../../utils/interfaceCards";
 
 
@@ -29,7 +29,7 @@ const Cards: React.FC<CardsProps> = ({
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.texto}>
-            Sobre Nome:
+            Sobrenome:
           </Text>
           <Text
             style={styles.itemTexto}>{` ${item.sobrenome}`}</Text>
@@ -53,7 +53,6 @@ const Cards: React.FC<CardsProps> = ({
 
         <View style={styles.botoesContainer}>
           {isEditing ? (
-            // Modal de Edição
             <EditarModal
               isVisible={isEditing}
               onEditar={handleSave}

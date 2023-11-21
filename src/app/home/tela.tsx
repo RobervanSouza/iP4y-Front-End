@@ -1,11 +1,10 @@
-import axios from "axios";
+
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  FlatList,
+
   Text,
   ScrollView,
-  Button,
+ 
   TouchableOpacity,
 } from "react-native";
 import Cards from "../../components/card/card";
@@ -32,13 +31,11 @@ const Home = ({ navigation }) => {
 
   const handleEditar = async (editedItem) => {
     try {
-      // Limpar mensagens de erro anteriores
+      
       setErroMensagem(null);
 
-      // Fazer a requisição PUT para o backend com os dados atualizados
       await api.put(`/formulario/${editedItem.id}`, editedItem);
 
-      // Atualizar a lista com os dados atualizados
       setDados((prevDados) =>
         prevDados.map((item) => (item.id === editedItem.id ? editedItem : item))
       );
@@ -52,10 +49,9 @@ const Home = ({ navigation }) => {
 
   const handleDeletar = async (itemId) => {
     try {
-      // Fazer a requisição DELETE para o backend
+      
       await api.delete(`/formulario/${itemId}`);
 
-      // Atualizar a lista removendo o item excluído
       setDados((prevDados) => prevDados.filter((item) => item.id !== itemId));
     } catch (error) {
       console.error("Erro ao deletar item:", error.message);
