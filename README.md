@@ -16,3 +16,6 @@
 ###  Validação de Data de Nascimento: Utiliza o Moment.js para validar a data de nascimento.
 ## Integração com Banco de Dados
 ### O aplicativo está conectado a um banco de dados, permitindo que todas as alterações realizadas no aplicativo também sejam refletidas no banco de dados. Isso garante consistência e persistência dos dados.
+
+# Autor
+## Robervan Souza
